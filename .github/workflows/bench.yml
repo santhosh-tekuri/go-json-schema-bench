@@ -29,9 +29,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
       - name: Populate dependencies
-        run:
-        - '(test -d vendor && echo vendor found) || go mod vendor'
-        - make deps
+        run: 'make deps && (test -d vendor && echo vendor found) || go mod vendor'
       - name: Benchmark ajv suite
         run: BENCH_COUNT=1 make bench-ajv
       - name: Benchmark draft7 suite
