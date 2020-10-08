@@ -70,7 +70,7 @@ bench-ajv: benchstat
 	@VALIDATOR=qri $(GO) test . -count $(BENCH_COUNT) -bench ^BenchmarkAjv$$ -run ^$$ >qri-ajv.txt || echo "Some cases failed"
 	@VALIDATOR=xeipuuv $(GO) test . -count $(BENCH_COUNT) -bench ^BenchmarkAjv$$ -run ^$$ >xeipuuv-ajv.txt || echo "Some cases failed"
 	@echo "Results"
-	@benchstat santhosh-ajv.txt qri-ajv.txt xeipuuv-ajv.txt
+	@benchstat -geomean santhosh-ajv.txt qri-ajv.txt xeipuuv-ajv.txt
 
 ## Benchmark draft-07 test cases
 bench-draft7: benchstat
@@ -78,4 +78,4 @@ bench-draft7: benchstat
 	@VALIDATOR=qri $(GO) test . -count $(BENCH_COUNT) -bench ^BenchmarkDraft7$$ -run ^$$ | tee >qri-draft7.txt || echo "Some cases failed"
 	@VALIDATOR=xeipuuv $(GO) test . -count $(BENCH_COUNT) -bench ^BenchmarkDraft7$$ -run ^$$ >xeipuuv-draft7.txt || echo "Some cases failed"
 	@echo "Results"
-	@benchstat santhosh-draft7.txt qri-draft7.txt xeipuuv-draft7.txt
+	@benchstat -geomean santhosh-draft7.txt qri-draft7.txt xeipuuv-draft7.txt

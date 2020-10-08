@@ -33,4 +33,4 @@ jobs:
       - name: Benchmark ajv suite
         run: BENCH_COUNT=4 make bench-ajv
       - name: Benchmark draft7 suite
-        run: BENCH_COUNT=4 make bench-ajv
+        run: BENCH_COUNT=4 make bench-draft7
