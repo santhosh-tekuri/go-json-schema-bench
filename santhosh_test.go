@@ -1,28 +1,12 @@
-package bench
+package bench_test
 
 import (
 	"bytes"
-	"github.com/santhosh-tekuri/jsonschema/v2"
-	"io"
-	"net/http"
 	"testing"
+
+	"github.com/santhosh-tekuri/jsonschema/v2"
+	_ "github.com/santhosh-tekuri/jsonschema/v2/httploader"
 )
-
-func init() {
-	jsonschema.Loaders["http"] = func(url string) (io.ReadCloser, error) {
-		req, err := http.NewRequest(http.MethodGet, url, nil)
-		if err != nil {
-			return nil, err
-		}
-
-		resp, err := http.DefaultTransport.RoundTrip(req)
-		if err != nil {
-			return nil, err
-		}
-
-		return resp.Body, nil
-	}
-}
 
 type santhoshValidator struct {
 	schema *jsonschema.Schema
@@ -53,7 +37,7 @@ func (s *santhoshValidator) ValidValue(d interface{}) bool {
 }
 
 func TestSanthoshAjv(t *testing.T) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	testDir(t, dir, &santhoshValidator{})
 }
 
@@ -67,6 +51,6 @@ func TestSanthoshDraft7Opt(t *testing.T) {
 }
 
 func BenchmarkSanthoshAjv(b *testing.B) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	benchDir(b, dir, &santhoshValidator{}, false)
 }

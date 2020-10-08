@@ -34,7 +34,24 @@ endif
 -include $(DEVGO_PATH)/makefiles/github-actions.mk
 
 ## Run tests
-test: test-unit
+test:
+	@make test-unit > test.txt || echo "Some cases failed"
+	@cat test.txt
+	@echo "santhosh-tekuri/jsonschema failed tests count"
+	@echo "draft 7          | $(shell cat test.txt | grep 'FAIL: TestSanthoshDraft7/' | grep -v 'format.json' | wc -l)"
+	@echo "draft 7 format   | $(shell cat test.txt | grep 'FAIL: TestSanthoshDraft7/format.json' | wc -l)"
+	@echo "draft 7 optional | $(shell cat test.txt | grep 'FAIL: TestSanthoshDraft7Opt/' | wc -l)"
+	@echo "ajv              | $(shell cat test.txt | grep 'FAIL: TestSanthoshAjv/' | wc -l)"
+	@echo "qri-io/jsonschema failed tests count"
+	@echo "draft 7          | $(shell cat test.txt | grep 'FAIL: TestQriDraft7/' | grep -v 'format.json' | wc -l)"
+	@echo "draft 7 format   | $(shell cat test.txt | grep 'FAIL: TestQriDraft7/format.json' | wc -l)"
+	@echo "draft 7 optional | $(shell cat test.txt | grep 'FAIL: TestQriDraft7Opt/' | wc -l)"
+	@echo "ajv              | $(shell cat test.txt | grep 'FAIL: TestQriAjv/' | wc -l)"
+	@echo "xeipuuv/gojsonschema failed tests count"
+	@echo "draft 7          | $(shell cat test.txt | grep 'FAIL: TestXeipuuvDraft7/' | grep -v 'format.json' | wc -l)"
+	@echo "draft 7 format   | $(shell cat test.txt | grep 'FAIL: TestXeipuuvDraft7/format.json' | wc -l)"
+	@echo "draft 7 optional | $(shell cat test.txt | grep 'FAIL: TestXeipuuvDraft7Opt/' | wc -l)"
+	@echo "ajv              | $(shell cat test.txt | grep 'FAIL: TestXeipuuvAjv/' | wc -l)"
 
 ## Ensure external test suite
 deps:

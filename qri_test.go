@@ -1,10 +1,11 @@
-package bench
+package bench_test
 
 import (
 	"context"
 	"encoding/json"
-	"github.com/qri-io/jsonschema"
 	"testing"
+
+	"github.com/qri-io/jsonschema"
 )
 
 type qriValidator struct {
@@ -40,7 +41,7 @@ func (s *qriValidator) ValidValue(d interface{}) bool {
 }
 
 func TestQriAjv(t *testing.T) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	testDir(t, dir, &qriValidator{})
 }
 
@@ -54,6 +55,6 @@ func TestQriDraft7Opt(t *testing.T) {
 }
 
 func BenchmarkQriAjv(b *testing.B) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	benchDir(b, dir, &qriValidator{}, false)
 }

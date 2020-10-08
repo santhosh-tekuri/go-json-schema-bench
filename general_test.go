@@ -1,16 +1,18 @@
-package bench
+package bench_test
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
+// nolint:gochecknoinits
 func init() {
 	go func() {
 		err := http.ListenAndServe(":1234", http.FileServer(http.Dir("./spec/JSON-Schema-Test-Suite/remotes/")))
@@ -49,13 +51,16 @@ func testDir(t *testing.T, dir string, v validator) {
 			continue
 		}
 
-		j, err := ioutil.ReadFile(dir + f.Name())
+		j, err := ioutil.ReadFile(dir + f.Name()) // nolint:gosec
 		require.NoError(t, err)
 
 		var testCases []testCase
+
 		require.NoError(t, json.Unmarshal(j, &testCases))
 
 		for _, testCase := range testCases {
+			testCase := testCase
+
 			assert.NotPanics(t, func() {
 				err = v.LoadSchema(testCase.Schema)
 			})
@@ -65,6 +70,8 @@ func testDir(t *testing.T, dir string, v validator) {
 			}
 
 			for _, test := range testCase.Tests {
+				test := test
+
 				t.Run(f.Name()+":"+testCase.Description+":"+test.Description, func(t *testing.T) {
 					assert.NotPanics(t, func() {
 						if test.Valid != v.ValidJSON(test.Data) {
@@ -77,6 +84,7 @@ func testDir(t *testing.T, dir string, v validator) {
 	}
 }
 
+// nolint:gocognit
 func benchDir(b *testing.B, dir string, v validator, validateValue bool) {
 	b.Helper()
 
@@ -84,10 +92,11 @@ func benchDir(b *testing.B, dir string, v validator, validateValue bool) {
 	require.NoError(b, err)
 
 	for _, f := range files {
-		j, err := ioutil.ReadFile(dir + f.Name())
+		j, err := ioutil.ReadFile(dir + f.Name()) // nolint:gosec
 		require.NoError(b, err)
 
 		var testCases []testCase
+
 		require.NoError(b, json.Unmarshal(j, &testCases))
 
 		for _, testCase := range testCases {
@@ -95,6 +104,8 @@ func benchDir(b *testing.B, dir string, v validator, validateValue bool) {
 			assert.NoError(b, err)
 
 			for _, test := range testCase.Tests {
+				test := test
+
 				b.Run(f.Name()+":"+testCase.Description+":"+test.Description, func(b *testing.B) {
 					if validateValue {
 						var val interface{}
@@ -129,6 +140,7 @@ func benchDir(b *testing.B, dir string, v validator, validateValue bool) {
 
 func validatorFromEnv() validator {
 	var v validator
+
 	switch os.Getenv("VALIDATOR") {
 	case "santhosh":
 		v = &santhoshValidator{}
@@ -143,13 +155,17 @@ func validatorFromEnv() validator {
 	return v
 }
 
+const (
+	ajvPath = "spec/ajv/spec/tests/schemas/"
+)
+
 func BenchmarkAjv(b *testing.B) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	benchDir(b, dir, validatorFromEnv(), false)
 }
 
 func BenchmarkAjvVal(b *testing.B) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	benchDir(b, dir, validatorFromEnv(), true)
 }
 

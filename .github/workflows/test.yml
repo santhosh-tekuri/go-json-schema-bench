@@ -29,6 +29,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ hashFiles('**/go.mod') }}
       - name: Populate dependencies
-        run: 'make deps && (test -d vendor && echo vendor found) || go mod vendor'
+        run: '((test -d vendor && echo vendor found) || go mod vendor) && make deps'
       - name: Test
-        run: make deps test-unit
+        run: make deps test

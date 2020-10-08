@@ -1,9 +1,10 @@
-package bench
+package bench_test
 
 import (
 	"encoding/json"
-	"github.com/xeipuuv/gojsonschema"
 	"testing"
+
+	"github.com/xeipuuv/gojsonschema"
 )
 
 type xeipuuvValidator struct {
@@ -15,6 +16,7 @@ func (s *xeipuuvValidator) LoadSchema(jsonSchema []byte) error {
 	s.schema = gojsonschema.NewBytesLoader(jsonSchema)
 
 	var schemaValue interface{}
+
 	err := json.Unmarshal(jsonSchema, &schemaValue)
 	if err != nil {
 		return err
@@ -27,6 +29,7 @@ func (s *xeipuuvValidator) LoadSchema(jsonSchema []byte) error {
 
 func (s *xeipuuvValidator) ValidJSON(d []byte) bool {
 	documentLoader := gojsonschema.NewBytesLoader(d)
+
 	result, err := gojsonschema.Validate(s.schema, documentLoader)
 	if err != nil {
 		panic(err)
@@ -37,6 +40,7 @@ func (s *xeipuuvValidator) ValidJSON(d []byte) bool {
 
 func (s *xeipuuvValidator) ValidValue(d interface{}) bool {
 	documentLoader := gojsonschema.NewGoLoader(d)
+
 	result, err := gojsonschema.Validate(s.schemaValue, documentLoader)
 	if err != nil {
 		panic(err)
@@ -46,7 +50,7 @@ func (s *xeipuuvValidator) ValidValue(d interface{}) bool {
 }
 
 func TestXeipuuvAjv(t *testing.T) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	testDir(t, dir, &xeipuuvValidator{})
 }
 
@@ -60,6 +64,6 @@ func TestXeipuuvDraft7Opt(t *testing.T) {
 }
 
 func BenchmarkXeipuuvAjv(b *testing.B) {
-	dir := "spec/ajv/spec/tests/schemas/"
+	dir := ajvPath
 	benchDir(b, dir, &xeipuuvValidator{}, false)
 }
