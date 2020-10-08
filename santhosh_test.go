@@ -2,11 +2,29 @@ package bench_test
 
 import (
 	"bytes"
+	"io"
+	"net/http"
 	"testing"
 
 	"github.com/santhosh-tekuri/jsonschema/v2"
-	_ "github.com/santhosh-tekuri/jsonschema/v2/httploader"
 )
+
+// nolint:gochecknoinits
+func init() {
+	jsonschema.Loaders["http"] = func(url string) (io.ReadCloser, error) {
+		req, err := http.NewRequest(http.MethodGet, url, nil) // nolint:noctx
+		if err != nil {
+			return nil, err
+		}
+
+		resp, err := http.DefaultTransport.RoundTrip(req) // nolint:bodyclose
+		if err != nil {
+			return nil, err
+		}
+
+		return resp.Body, nil
+	}
+}
 
 type santhoshValidator struct {
 	schema *jsonschema.Schema

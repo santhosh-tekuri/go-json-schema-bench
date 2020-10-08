@@ -33,9 +33,11 @@ endif
 -include $(DEVGO_PATH)/makefiles/lint.mk
 -include $(DEVGO_PATH)/makefiles/github-actions.mk
 
-## Run tests
-test:
+run-test:
 	@make test-unit > test.txt || echo "Some cases failed"
+
+## Run tests
+test: run-test
 	@cat test.txt
 	@echo "santhosh-tekuri/jsonschema failed tests count"
 	@echo "draft 7          | $(shell cat test.txt | grep 'FAIL: TestSanthoshDraft7/' | grep -v 'format.json' | wc -l)"
