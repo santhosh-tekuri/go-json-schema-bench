@@ -1,28 +1,22 @@
 package bench_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/xeipuuv/gojsonschema"
 )
 
 type xeipuuvValidator struct {
-	schema      gojsonschema.JSONLoader
-	schemaValue gojsonschema.JSONLoader
+	schema *gojsonschema.Schema
 }
 
 func (s *xeipuuvValidator) LoadSchema(jsonSchema []byte) error {
-	s.schema = gojsonschema.NewBytesLoader(jsonSchema)
-
-	var schemaValue interface{}
-
-	err := json.Unmarshal(jsonSchema, &schemaValue)
+	schema, err := gojsonschema.NewSchema(gojsonschema.NewBytesLoader(jsonSchema))
 	if err != nil {
 		return err
 	}
 
-	s.schemaValue = gojsonschema.NewGoLoader(schemaValue)
+	s.schema = schema
 
 	return nil
 }
@@ -30,7 +24,7 @@ func (s *xeipuuvValidator) LoadSchema(jsonSchema []byte) error {
 func (s *xeipuuvValidator) ValidJSON(d []byte) bool {
 	documentLoader := gojsonschema.NewBytesLoader(d)
 
-	result, err := gojsonschema.Validate(s.schema, documentLoader)
+	result, err := s.schema.Validate(documentLoader)
 	if err != nil {
 		panic(err)
 	}
@@ -41,7 +35,7 @@ func (s *xeipuuvValidator) ValidJSON(d []byte) bool {
 func (s *xeipuuvValidator) ValidValue(d interface{}) bool {
 	documentLoader := gojsonschema.NewGoLoader(d)
 
-	result, err := gojsonschema.Validate(s.schemaValue, documentLoader)
+	result, err := s.schema.Validate(documentLoader)
 	if err != nil {
 		panic(err)
 	}
