@@ -8,8 +8,8 @@ github.com/qri-io/jsonpointer v0.1.1 h1:prVZBZLL6TW5vsSB9fFHFAMBLI4b0ri5vribQlTJ
 github.com/qri-io/jsonpointer v0.1.1/go.mod h1:DnJPaYgiKu56EuDp8TU5wFLdZIcAnb/uH9v37ZaMV64=
 github.com/qri-io/jsonschema v0.2.0 h1:is8lirh3HYwTkC0e+4jL/vWEHwzPLojnl4FWkUoeEPU=
 github.com/qri-io/jsonschema v0.2.0/go.mod h1:g7DPkiOsK1xv6T/Ao5scXRkd+yTFygcANPBaaqW+VrI=
-github.com/santhosh-tekuri/jsonschema/v2 v2.2.0 h1:72xCpK0g27Y1is2lreGNcZhIX3ZCtRpkHvvHrHD+5y4=
-github.com/santhosh-tekuri/jsonschema/v2 v2.2.0/go.mod h1:yzJzKUGV4RbWqWIBBP4wSOBqavX5saE02yirLS0OTyg=
+github.com/santhosh-tekuri/jsonschema/v3 v3.0.1 h1:tQVL4vmtH0NYlua++DZCaCUCIs8JdnxKB1Fto2BiEfY=
+github.com/santhosh-tekuri/jsonschema/v3 v3.0.1/go.mod h1:oOUSf2vgwmcYO4CkIJnEKle02MmEeI3cyItX+fxgpzg=
 github.com/sergi/go-diff v1.0.0 h1:Kpca3qRNrduNnOQeazBd0ysaKrUJiIuISHxogkT9RPQ=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

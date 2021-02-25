@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/santhosh-tekuri/jsonschema/v2"
+	"github.com/santhosh-tekuri/jsonschema/v3"
 )
 
 // nolint:gochecknoinits
